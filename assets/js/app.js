@@ -31,7 +31,11 @@ async function livePrices() {
     const r = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT");
     if (r.ok) { const j = await r.json(); out.BTCUSD = { p: +j.lastPrice, chg: +j.priceChangePercent }; }
   } catch (_) {}
-  // Or : prix indicatif si pas de clé API (mis à jour côté page signaux via Engine).
+  // Or : prix réel via PAXG (or physique tokenisé sur Binance, sans clé requise).
+  try {
+    const r = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT");
+    if (r.ok) { const j = await r.json(); out.XAUUSD = { p: +j.lastPrice, chg: +j.priceChangePercent }; }
+  } catch (_) {}
   return out;
 }
 
@@ -48,8 +52,8 @@ async function renderTape() {
     { s: "BTC/USD", v: pr.BTCUSD ? fmt(pr.BTCUSD.p, 1) : "—", c: pr.BTCUSD?.chg },
     { s: "XAU/USD", v: pr.XAUUSD ? fmt(pr.XAUUSD.p, 2) : "flux live", c: pr.XAUUSD?.chg },
     { s: "SESSION", v: sessionNow() },
-    { s: "SIGNAUX/JOUR", v: "≥ 2" },
-    { s: "TIMEFRAME", v: "M15 · H1 · H4" },
+    { s: "SIGNAUX/JOUR", v: "≥ 3" },
+    { s: "INSTRUMENTS", v: "7" },
     { s: "R:R MIN", v: "1:2" }
   ];
   const html = items.map(i => {

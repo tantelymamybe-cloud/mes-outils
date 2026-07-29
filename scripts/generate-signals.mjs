@@ -11,8 +11,13 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 const INTERVAL = "1h";
 const LIMIT = 200;
 const SPECS = {
-  BTCUSD: { binance: "BTCUSDT", digits: 1, atrMult: 1.4, emoji: "₿" },
-  XAUUSD: { td: "XAU/USD",      digits: 2, atrMult: 1.3, emoji: "🥇" }
+  XAUUSD: { binance: "PAXGUSDT", td: "XAU/USD", digits: 2, atrMult: 1.3, emoji: "🥇" },
+  BTCUSD: { binance: "BTCUSDT",  digits: 1, atrMult: 1.4, emoji: "₿" },
+  ETHUSD: { binance: "ETHUSDT",  digits: 2, atrMult: 1.4, emoji: "Ξ" },
+  SOLUSD: { binance: "SOLUSDT",  digits: 2, atrMult: 1.5, emoji: "◎" },
+  BNBUSD: { binance: "BNBUSDT",  digits: 2, atrMult: 1.4, emoji: "🅑" },
+  XRPUSD: { binance: "XRPUSDT",  digits: 4, atrMult: 1.5, emoji: "✕" },
+  ADAUSD: { binance: "ADAUSDT",  digits: 4, atrMult: 1.5, emoji: "₳" }
 };
 
 const ENV = {
@@ -22,10 +27,10 @@ const ENV = {
 };
 
 /* ---------- Données -------------------------------------------------------- */
-async function fetchBinance() {
-  const url = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=${INTERVAL}&limit=${LIMIT}`;
+async function fetchBinance(pair = "BTCUSDT") {
+  const url = `https://api.binance.com/api/v3/klines?symbol=${pair}&interval=${INTERVAL}&limit=${LIMIT}`;
   const r = await fetch(url);
-  if (!r.ok) throw new Error("binance " + r.status);
+  if (!r.ok) throw new Error("binance " + r.status + " (" + pair + ")");
   const raw = await r.json();
   return raw.map(k => ({ o: +k[1], h: +k[2], l: +k[3], c: +k[4] }));
 }
@@ -39,7 +44,13 @@ async function fetchTwelve() {
   return j.values.map(v => ({ o: +v.open, h: +v.high, l: +v.low, c: +v.close }));
 }
 async function candles(sym) {
-  return sym === "BTCUSD" ? fetchBinance() : fetchTwelve();
+  // XAUUSD : Twelve Data si clé dispo (le plus précis), sinon repli PAXG.
+  if (sym === "XAUUSD" && ENV.TD_KEY) {
+    try { return await fetchTwelve(); }
+    catch (e) { console.warn("Twelve Data KO, repli PAXG :", e.message); }
+  }
+  // Toutes les autres paires (et l'or sans clé) : Binance, aucune clé requise.
+  return fetchBinance(SPECS[sym].binance);
 }
 
 /* ---------- Indicateurs ---------------------------------------------------- */

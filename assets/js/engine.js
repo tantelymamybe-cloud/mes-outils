@@ -20,26 +20,35 @@ const Engine = (() => {
   };
 
   const SPECS = {
+    XAUUSD: { td: "XAU/USD", binance: "PAXGUSDT", digits: 2, atrMult: 1.3 },
     BTCUSD: { binance: "BTCUSDT", digits: 1,  atrMult: 1.4 },
-    XAUUSD: { td: "XAU/USD",      digits: 2,  atrMult: 1.3 }
+    ETHUSD: { binance: "ETHUSDT", digits: 2,  atrMult: 1.4 },
+    SOLUSD: { binance: "SOLUSDT", digits: 2,  atrMult: 1.5 },
+    BNBUSD: { binance: "BNBUSDT", digits: 2,  atrMult: 1.4 },
+    XRPUSD: { binance: "XRPUSDT", digits: 4,  atrMult: 1.5 },
+    ADAUSD: { binance: "ADAUSDT", digits: 4,  atrMult: 1.5 }
   };
 
   /* ---------- Récupération des bougies --------------------------------- */
   async function fetchCandles(symbol) {
+    const spec = SPECS[symbol] || {};
     try {
-      if (symbol === "BTCUSD") return await fetchBinance();
-      if (symbol === "XAUUSD") {
-        if (CONFIG.TWELVE_DATA_KEY) return await fetchTwelveData();
+      // XAUUSD : Twelve Data si clé fournie (le plus précis)
+      if (symbol === "XAUUSD" && CONFIG.TWELVE_DATA_KEY) {
+        try { return await fetchTwelveData(); }
+        catch (e) { console.warn("[engine] Twelve Data KO, bascule PAXG :", e.message); }
       }
+      // Toutes les paires (et l'or sans clé) : Binance, sans clé
+      if (spec.binance) return await fetchBinance(spec.binance);
     } catch (e) {
       console.warn("[engine] source réelle indisponible, bascule démo :", e.message);
     }
-    return synthetic(symbol);            // secours : données de démonstration
+    return synthetic(symbol);            // secours ultime : données de démonstration
   }
 
-  async function fetchBinance() {
+  async function fetchBinance(pair = "BTCUSDT") {
     const iv = CONFIG.interval.replace("min", "m");
-    const url = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=${iv}&limit=${CONFIG.limit}`;
+    const url = `https://api.binance.com/api/v3/klines?symbol=${pair}&interval=${iv}&limit=${CONFIG.limit}`;
     const r = await fetch(url);
     if (!r.ok) throw new Error("binance " + r.status);
     const raw = await r.json();
@@ -62,8 +71,9 @@ const Engine = (() => {
 
   // Flux synthétique déterministe (marche partout, sans réseau) --------------
   function synthetic(symbol) {
-    const base = symbol === "BTCUSD" ? 68000 : 2350;
-    const vol  = symbol === "BTCUSD" ? 900   : 12;
+    const BASES = { BTCUSD:68000, XAUUSD:3300, ETHUSD:3400, SOLUSD:150, BNBUSD:600, XRPUSD:0.55, ADAUSD:0.45 };
+    const base = BASES[symbol] ?? 100;
+    const vol  = base * 0.012;
     let seed = Date.now() >> 16, price = base;
     const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
     const out = [];

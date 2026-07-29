@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signaux du jour — XAUUSD & BTCUSD | SNIPR Desk</title>
+  <meta name="description" content="Signaux de trading en direct sur l'Or (XAUUSD) et le Bitcoin (BTCUSD) : entrée, stop loss et objectifs 1:2 / 1:3. Mise à jour automatique toutes les 2 heures, au moins 3 signaux par jour.">
+  <meta name="keywords" content="signaux trading, XAUUSD, BTCUSD, order block, fair value gap, gold, bitcoin, temps réel">
+  <link rel="canonical" href="https://sniprdesk.example/signals.html">
+  <meta property="og:title" content="Signaux du jour — SNIPR Desk">
+  <meta property="og:description" content="Signaux en direct Or & Bitcoin, mise à jour toutes les 2 h. Entrée, stop, objectifs.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Bandeau tape -->
+  <div class="tape"><div class="wrap"><div class="tape__track"></div></div></div>
+
+  <!-- Navigation -->
+  <header class="nav">
+    <div class="wrap nav__row">
+      <a href="index.html" class="brand">
+        <span class="brand__mark">S</span>
+        <span>SNIPR<small>DESK · GOLD & BTC</small></span>
+      </a>
+      <nav class="nav__links">
+        <a href="index.html">Accueil</a>
+        <a href="signals.html" class="active">Signaux</a>
+        <a href="education.html">Méthode</a>
+        <a href="disclaimer.html">Risques</a>
+        <a href="index.html" class="nav__cta">Accueil →</a>
+      </nav>
+      <button class="burger" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- En-tête page -->
+  <section class="section" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="reveal" style="max-width:64ch">
+        <div class="eyebrow">Signaux du jour · mise à jour auto toutes les 2 h</div>
+        <h1 class="h-lg" style="margin-bottom:10px">Les signaux en direct sur l'Or et le Bitcoin.</h1>
+        <p class="lead" style="margin:0">Chaque signal est calculé sur données réelles (Order Blocks, Fair Value Gaps, confluence) avec entrée, stop loss et deux objectifs. Au moins 3 signaux publiés par jour.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bannière nouveau signal -->
+  <section class="section" style="padding-top:26px;padding-bottom:0">
+    <div class="wrap">
+      <div class="new-banner" id="new-banner">
+        <span class="new-banner__dot"></span>
+        <span><b>Nouveau signal !</b> <span data-text>—</span></span>
+      </div>
+
+      <!-- Barre d'outils : onglets + actions -->
+      <div class="signalbar">
+        <div class="tabs" role="tablist" style="flex-wrap:wrap">
+          <button data-sym="XAUUSD" class="active">🥇 Or</button>
+          <button data-sym="BTCUSD">₿ BTC</button>
+          <button data-sym="ETHUSD">Ξ ETH</button>
+          <button data-sym="SOLUSD">◎ SOL</button>
+          <button data-sym="BNBUSD">🅑 BNB</button>
+          <button data-sym="XRPUSD">✕ XRP</button>
+          <button data-sym="ADAUSD">₳ ADA</button>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span id="last-update" class="mono" style="font-size:12px;color:var(--muted)">Chargement…</span>
+          <button id="refresh" class="btn btn--ghost" style="padding:9px 16px">↻ Rafraîchir</button>
+          <button id="notify-btn" class="btn btn--teal" style="padding:9px 16px">🔔 Activer les notifications</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grille des signaux -->
+  <section class="section" style="padding-top:22px">
+    <div class="wrap">
+      <div class="signals-grid" id="signals-grid">
+        <div class="state"><div class="spinner"></div>Chargement des signaux…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historique -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="reveal" style="margin-bottom:18px">
+        <div class="eyebrow">Historique</div>
+        <h2 class="h-md">Signaux précédents · <span id="hist-sym">XAUUSD</span></h2>
+      </div>
+      <div class="history" id="history-list">
+        <div class="state">Chargement de l'historique…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Risque -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap reveal">
+      <div class="risk">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E35B54" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <div><b>Avertissement.</b> Le trading comporte un risque de perte en capital. Les signaux de SNIPR Desk sont une aide à la décision issue d'une analyse technique automatisée — ils ne garantissent aucun résultat et ne constituent pas un conseil en investissement. Le score de confluence n'est pas une probabilité de gain.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="brand"><span class="brand__mark">S</span><span>SNIPR<small>DESK</small></span></a>
+          <p>Signaux d'analyse technique sur l'Or et le Bitcoin. Méthode Smart Money : Order Blocks, Fair Value Gaps, confluence.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <a href="index.html">Accueil</a>
+          <a href="signals.html">Signaux du jour</a>
+          <a href="education.html">La méthode</a>
+          <a href="disclaimer.html">Risques &amp; mentions</a>
+        </div>
+        <div>
+          <h4>Instruments</h4>
+          <a href="signals.html">XAUUSD — Or</a>
+          <a href="signals.html">BTCUSD — Bitcoin</a>
+        </div>
+      </div>
+      <div class="footer__base">
+        <span>© <span data-year>2026</span> SNIPR Desk. Analyse fournie à titre informatif.</span>
+        <span>Le trading comporte des risques.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/engine.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/signals.js"></script>
+</body>
+</html>

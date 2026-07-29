@@ -11,7 +11,8 @@ const Signals = (() => {
   let history = [];      // tableau, plus récent en tête
 
   const fmt = (v, d) => (+v).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
-  const digits = (sym) => (sym === "BTCUSD" ? 1 : 2);
+  const DIGITS = { BTCUSD:1, XAUUSD:2, ETHUSD:2, SOLUSD:2, BNBUSD:2, XRPUSD:4, ADAUSD:4 };
+  const digits = (sym) => DIGITS[sym] ?? 2;
 
   /* ---------- Rendu d'une carte signal ------------------------------------ */
   function card(sig) {
