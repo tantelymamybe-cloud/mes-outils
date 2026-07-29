@@ -1,0 +1,282 @@
+[
+  {
+    "id": "BTCUSD-1785332480870-vwgp",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "67941.1",
+    "entry": "67941.1",
+    "sl": "68674.1",
+    "tp1": "66475.2",
+    "tp2": "65742.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-29T13:41:20.870Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480959-b939",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2349.22",
+    "entry": "2349.22",
+    "sl": "2358.29",
+    "tp1": "2331.07",
+    "tp2": "2321.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-29T13:41:20.959Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "BTCUSD-1785332480967-bi7i",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "67941.1",
+    "entry": "67941.1",
+    "sl": "68674.1",
+    "tp1": "66475.2",
+    "tp2": "65742.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-29T13:41:20.970Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480970-c1da",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2349.22",
+    "entry": "2349.22",
+    "sl": "2358.29",
+    "tp1": "2331.07",
+    "tp2": "2321.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-29T13:41:20.970Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "BTCUSD-1785332480972-8bld",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "67971.1",
+    "entry": "67971.1",
+    "sl": "68704.1",
+    "tp1": "66505.2",
+    "tp2": "65772.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-29T01:41:20.983Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480983-xx4t",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2350.22",
+    "entry": "2350.22",
+    "sl": "2359.29",
+    "tp1": "2332.07",
+    "tp2": "2322.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-29T01:41:20.983Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "BTCUSD-1785332480983-rzd8",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "68001.1",
+    "entry": "68001.1",
+    "sl": "68734.1",
+    "tp1": "66535.2",
+    "tp2": "65802.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-28T13:41:20.984Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480984-oo4f",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2351.22",
+    "entry": "2351.22",
+    "sl": "2360.29",
+    "tp1": "2333.07",
+    "tp2": "2323.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-28T13:41:20.984Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "BTCUSD-1785332480984-fes8",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "68031.1",
+    "entry": "68031.1",
+    "sl": "68764.1",
+    "tp1": "66565.2",
+    "tp2": "65832.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-28T01:41:20.985Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480985-w1cx",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2352.22",
+    "entry": "2352.22",
+    "sl": "2361.29",
+    "tp1": "2334.07",
+    "tp2": "2324.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-28T01:41:20.985Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "BTCUSD-1785332480985-c8ug",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "68061.1",
+    "entry": "68061.1",
+    "sl": "68794.1",
+    "tp1": "66595.2",
+    "tp2": "65862.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-27T13:41:20.985Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480985-bzn3",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2353.22",
+    "entry": "2353.22",
+    "sl": "2362.29",
+    "tp1": "2335.07",
+    "tp2": "2325.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-27T13:41:20.985Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "BTCUSD-1785332480986-fbgn",
+    "symbol": "BTCUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "68091.1",
+    "entry": "68091.1",
+    "sl": "68824.1",
+    "tp1": "66625.2",
+    "tp2": "65892.3",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-27T01:41:20.990Z",
+    "timeLabel": "29/07 13:41"
+  },
+  {
+    "id": "XAUUSD-1785332480990-j4pg",
+    "symbol": "XAUUSD",
+    "dir": "SHORT",
+    "tf": "1h",
+    "price": "2354.22",
+    "entry": "2354.22",
+    "sl": "2363.29",
+    "tp1": "2336.07",
+    "tp2": "2326.99",
+    "rsi": "45.1",
+    "conf": 68,
+    "tags": [
+      "Order Block",
+      "BOS",
+      "R:R 1:2 / 1:3"
+    ],
+    "generatedAt": "2026-07-27T01:41:20.990Z",
+    "timeLabel": "29/07 13:41"
+  }
+]
