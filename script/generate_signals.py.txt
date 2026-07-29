@@ -1,0 +1,70 @@
+import json
+import os
+import requests
+from datetime import datetime
+
+# Liste des 6 paires à analyser
+SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT"]
+
+def fetch_data(symbol):
+    """Récupère les bougies des 24 dernières heures"""
+    url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval=1h&limit=24"
+    try:
+        res = requests.get(url, timeout=10)
+        if res.status_code == 200:
+            return res.json()
+    except Exception as e:
+        print(f"Erreur lors de la récupération pour {symbol}: {e}")
+    return None
+
+def generate_signals():
+    signals = []
+    
+    for symbol in SYMBOLS:
+        klines = fetch_data(symbol)
+        if not klines:
+            continue
+            
+        close_prices = [float(k[4]) for k in klines]
+        current_price = close_prices[-1]
+        price_2h_ago = close_prices[-3]
+        
+        # Variation du prix sur 2 heures
+        change_pct = ((current_price - price_2h_ago) / price_2h_ago) * 100
+        
+        # Logique de signal simple
+        if change_pct > 0.3:
+            action = "BUY"
+            tp = round(current_price * 1.02, 4)
+            sl = round(current_price * 0.99, 4)
+        elif change_pct < -0.3:
+            action = "SELL"
+            tp = round(current_price * 0.98, 4)
+            sl = round(current_price * 1.01, 4)
+        else:
+            action = "BUY" if current_price > close_prices[0] else "SELL"
+            tp = round(current_price * 1.015, 4)
+            sl = round(current_price * 0.992, 4)
+
+        signals.append({
+            "pair": symbol.replace("USDT", "/USDT"),
+            "type": action,
+            "entry_price": current_price,
+            "target_tp": tp,
+            "stop_loss": sl,
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+        })
+
+    # Sauvegarde dans data/signals.json
+    os.makedirs("data", exist_ok=True)
+    output_path = os.path.join("data", "signals.json")
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "last_updated": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
+            "signals": signals
+        }, f, indent=2)
+
+    print(f"{len(signals)} signaux générés avec succès.")
+
+if __name__ == "__main__":
+    generate_signals()
