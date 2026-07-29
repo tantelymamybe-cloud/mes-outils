@@ -1,41 +1,123 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page introuvable — SNIPR Desk</title>
-  <meta name="robots" content="noindex">
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
-</head>
-<body>
-  <header class="nav">
-    <div class="wrap nav__row">
-      <a href="/index.html" class="brand"><span class="brand__mark">S</span><span>SNIPR<small>DESK · GOLD & BTC</small></span></a>
-      <nav class="nav__links">
-        <a href="/index.html">Accueil</a>
-        <a href="/signals.html">Signaux</a>
-        <a href="/education.html">Méthode</a>
-        <a href="/disclaimer.html">Risques</a>
-      </nav>
-      <button class="burger" aria-label="Menu">☰</button>
-    </div>
-  </header>
+/* ==========================================================================
+   SNIPR — Script partagé (navigation, tape, prix live, animations)
+   ========================================================================== */
 
-  <main class="wrap err">
-    <div class="err__code">4<span>0</span>4</div>
-    <div class="eyebrow" style="margin-top:14px">Setup introuvable</div>
-    <h1 class="h-lg" style="margin-bottom:10px">Ce niveau n'a jamais été atteint.</h1>
-    <p class="lead" style="margin:0 auto 26px">La page que vous cherchez n'existe pas ou a été déplacée. Revenez à la table de trading.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="/index.html" class="btn btn--gold">Retour à l'accueil</a>
-      <a href="/signals.html" class="btn btn--ghost">Voir les signaux</a>
-    </div>
-  </main>
+/* ---------- Menu mobile --------------------------------------------------- */
+document.addEventListener("click", (e) => {
+  const burger = e.target.closest(".burger");
+  const links = document.querySelector(".nav__links");
+  if (burger && links) links.classList.toggle("open");
+  else if (links && !e.target.closest(".nav") && links.classList.contains("open")) {
+    links.classList.remove("open");
+  }
+});
 
-  <script src="/assets/js/app.js"></script>
-</body>
-</html>
+/* ---------- Reveal au scroll ---------------------------------------------- */
+(() => {
+  const els = document.querySelectorAll(".reveal");
+  if (!els.length || !("IntersectionObserver" in window)) {
+    els.forEach(el => el.classList.add("in")); return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+  }, { threshold: 0.15 });
+  els.forEach(el => io.observe(el));
+})();
+
+/* ---------- Prix live (BTC via Binance, Or via démo/API) ------------------ */
+async function livePrices() {
+  const out = { BTCUSD: null, XAUUSD: null };
+  try {
+    const r = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT");
+    if (r.ok) { const j = await r.json(); out.BTCUSD = { p: +j.lastPrice, chg: +j.priceChangePercent }; }
+  } catch (_) {}
+  // Or : prix réel via PAXG (or physique tokenisé sur Binance, sans clé requise).
+  try {
+    const r = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT");
+    if (r.ok) { const j = await r.json(); out.XAUUSD = { p: +j.lastPrice, chg: +j.priceChangePercent }; }
+  } catch (_) {}
+  return out;
+}
+
+function fmt(n, d) {
+  return n == null ? "—" : n.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+
+/* ---------- Bandeau tape -------------------------------------------------- */
+async function renderTape() {
+  const track = document.querySelector(".tape__track");
+  if (!track) return;
+  const pr = await livePrices();
+  const items = [
+    { s: "BTC/USD", v: pr.BTCUSD ? fmt(pr.BTCUSD.p, 1) : "—", c: pr.BTCUSD?.chg },
+    { s: "XAU/USD", v: pr.XAUUSD ? fmt(pr.XAUUSD.p, 2) : "flux live", c: pr.XAUUSD?.chg },
+    { s: "SESSION", v: sessionNow() },
+    { s: "SIGNAUX/JOUR", v: "≥ 3" },
+    { s: "INSTRUMENTS", v: "7" },
+    { s: "R:R MIN", v: "1:2" }
+  ];
+  const html = items.map(i => {
+    const chg = i.c != null ? `<b class="${i.c >= 0 ? "up" : "down"}">${i.c >= 0 ? "+" : ""}${i.c.toFixed(2)}%</b>` : "";
+    return `<span class="tape__item">${i.s} <b>${i.v}</b> ${chg}</span>`;
+  }).join("");
+  track.innerHTML = html + html;   // dupliqué pour la boucle
+}
+
+function sessionNow() {
+  const h = new Date().getUTCHours();
+  if (h >= 0 && h < 7)  return "ASIE";
+  if (h >= 7 && h < 12) return "LONDRES";
+  if (h >= 12 && h < 16) return "LONDRES/NY";
+  if (h >= 16 && h < 21) return "NEW YORK";
+  return "APRÈS-CLÔTURE";
+}
+
+/* ---------- Sparkline (mini-graphe dans le hero) -------------------------- */
+function drawSpark(el, candles, color) {
+  if (!el || !candles?.length) return;
+  const data = candles.slice(-48).map(c => c.c);
+  const min = Math.min(...data), max = Math.max(...data), range = max - min || 1;
+  const w = 300, h = 70;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((v - min) / range) * (h - 8) - 4;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  const up = data.at(-1) >= data[0];
+  const stroke = color || (up ? "#35B98A" : "#E35B54");
+  el.innerHTML = `
+    <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+      <defs><linearGradient id="g${el.id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${stroke}" stop-opacity="0.28"/>
+        <stop offset="1" stop-color="${stroke}" stop-opacity="0"/>
+      </linearGradient></defs>
+      <polygon points="0,${h} ${pts} ${w},${h}" fill="url(#g${el.id})"/>
+      <polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="2"
+        stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>`;
+}
+
+/* ---------- Carte instrument du hero -------------------------------------- */
+async function heroInstrument() {
+  const box = document.getElementById("hero-instrument");
+  if (!box || typeof Engine === "undefined") return;
+  try {
+    const sig = await Engine.analyze("BTCUSD");
+    box.querySelector("[data-price]").textContent = "$" + fmt(+sig.price, 1);
+    box.querySelector("[data-entry]").textContent = fmt(+sig.entry, 1);
+    box.querySelector("[data-sl]").textContent    = fmt(+sig.sl, 1);
+    box.querySelector("[data-tp]").textContent    = fmt(+sig.tp1, 1);
+    const dirEl = box.querySelector("[data-dir]");
+    dirEl.textContent = sig.dir === "LONG" ? "ACHAT" : "VENTE";
+    dirEl.className = "pill " + (sig.dir === "LONG" ? "pill--long" : "pill--short");
+    drawSpark(document.getElementById("hero-spark"), sig.candles, "#F0932B");
+  } catch (e) { console.warn(e); }
+}
+
+/* ---------- Init ---------------------------------------------------------- */
+renderTape();
+heroInstrument();
+setInterval(renderTape, 30000);
+
+/* Année dynamique dans le footer */
+document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
