@@ -1,0 +1,36 @@
+name: Update Trading Signals
+
+on:
+  schedule:
+    # S'exécute automatiquement toutes les 2 heures
+    - cron: '0 */2 * * *'
+  workflow_dispatch: # Permet de déclencher la mise à jour manuellement depuis GitHub
+
+jobs:
+  update-signals:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Generate signals
+        run: python scripts/generate_signals.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/signals.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update trading signals" && git push)
